@@ -1,270 +1,101 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>정연수 · 제주도의 노을</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>정연수 · 제주도의 바다</title>
 
 <style>
-  :root{
-    --sky1:#FFB36B;   /* sunset orange */
-    --sky2:#FF6FA7;   /* pink */
-    --sky3:#6B7CFF;   /* twilight */
-    --sea1:#2E6BE6;
-    --sea2:#133A7C;
-    --card:rgba(255,255,255,.18);
-    --border:rgba(255,255,255,.28);
-    --text:#ffffff;
-  }
+* { box-sizing: border-box; }
 
-  *{box-sizing:border-box}
-  body{
-    margin:0;
-    height:100vh;
-    overflow:hidden;
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial;
-    color:var(--text);
-    background: radial-gradient(1200px 500px at 50% 18%, rgba(255,255,255,.25), transparent 60%),
-                linear-gradient(180deg, var(--sky1) 0%, var(--sky2) 35%, var(--sky3) 70%, #0B1636 100%);
-  }
+body {
+    margin: 0;
+    height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    color: white;
+    background:
+        linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.6)),
+        url("https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=1950&q=80");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
 
-  /* Sun */
-  .sun{
-    position:absolute;
-    top:9vh;
-    left:50%;
-    transform:translateX(-50%);
-    width:160px;
-    height:160px;
-    border-radius:999px;
-    background: radial-gradient(circle at 30% 30%, #fff7c9, #ffd37a 35%, #ff9b5e 70%, rgba(255,155,94,.0) 72%);
-    filter: blur(.2px);
-    box-shadow: 0 0 60px rgba(255, 214, 128, .35);
-    opacity:.92;
-  }
+/* 轻微漂浮效果 */
+body::after {
+    content: "";
+    position: absolute;
+    width: 120%;
+    height: 120%;
+    background: inherit;
+    top: -10%;
+    left: -10%;
+    z-index: -1;
+    animation: subtleMove 20s ease-in-out infinite alternate;
+}
 
-  /* Sea */
-  .sea{
-    position:absolute;
-    left:0; right:0;
-    bottom:0;
-    height:42vh;
-    background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,0) 18%),
-                linear-gradient(180deg, var(--sea1), var(--sea2));
-  }
+@keyframes subtleMove {
+    from { transform: scale(1) translateY(0px); }
+    to { transform: scale(1.05) translateY(-10px); }
+}
 
-  /* Waves */
-  .wave{
-    position:absolute;
-    left:-10%;
-    width:120%;
-    height:70px;
-    background: rgba(255,255,255,.15);
-    filter: blur(.2px);
-    border-radius: 100% 100% 0 0;
-    animation: waveMove 7s ease-in-out infinite alternate;
-  }
-  .wave.w1{ bottom:30vh; opacity:.16; animation-duration:8s; }
-  .wave.w2{ bottom:22vh; opacity:.12; animation-duration:10s; }
-  .wave.w3{ bottom:14vh; opacity:.10; animation-duration:12s; }
+/* 玻璃卡片 */
+.card {
+    width: min(650px, 90%);
+    padding: 60px 50px;
+    border-radius: 30px;
+    backdrop-filter: blur(20px);
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    box-shadow: 0 40px 80px rgba(0,0,0,0.5);
+    text-align: center;
+}
 
-  @keyframes waveMove{
-    from{ transform:translateX(-2%) translateY(0px) }
-    to  { transform:translateX(2%)  translateY(10px) }
-  }
+h1 {
+    font-size: 48px;
+    margin-bottom: 30px;
+    letter-spacing: 2px;
+}
 
-  /* Floating tangerines (귤) */
-  .gyul{
-    position:absolute;
-    width:16px; height:16px;
-    border-radius:999px;
-    background: radial-gradient(circle at 30% 30%, #fff2b0, #ffb100 35%, #ff7a00 70%);
-    box-shadow: 0 10px 20px rgba(0,0,0,.12);
-    opacity:.9;
-    animation: floatDown linear infinite;
-  }
-  .gyul::after{
-    content:"";
-    position:absolute;
-    top:-4px; left:6px;
-    width:4px; height:4px;
-    background:#2ecc71;
-    border-radius:2px;
-    transform: rotate(20deg);
-    opacity:.9;
-  }
-  @keyframes floatDown{
-    to{ transform: translateY(110vh) rotate(360deg); }
-  }
+.line {
+    opacity: 0;
+    transform: translateY(15px);
+    transition: all 1s ease;
+    font-size: 20px;
+    line-height: 2;
+}
 
-  /* Card */
-  .wrap{
-    position:relative;
-    z-index:5;
-    height:100vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:22px;
-  }
-
-  .card{
-    width:min(560px, 92vw);
-    background: var(--card);
-    border:1px solid var(--border);
-    border-radius:28px;
-    backdrop-filter: blur(14px);
-    box-shadow: 0 24px 60px rgba(0,0,0,.25);
-    padding:42px 36px;
-    text-align:center;
-    animation: enter 1.2s ease;
-  }
-  @keyframes enter{
-    from{ opacity:0; transform: translateY(14px) scale(.98); }
-    to  { opacity:1; transform: translateY(0) scale(1); }
-  }
-
-  h1{
-    margin:0 0 14px;
-    font-size:42px;
-    letter-spacing:.5px;
-  }
-
-  .sub{
-    margin:0 0 18px;
-    opacity:.92;
-    font-size:15px;
-    letter-spacing:.2px;
-  }
-
-  .msg{
-    margin:0;
-    font-size:18px;
-    line-height:1.85;
-    opacity:.95;
-  }
-
-  .pillRow{
-    display:flex;
-    gap:10px;
-    justify-content:center;
-    flex-wrap:wrap;
-    margin-top:22px;
-  }
-  .pill{
-    padding:10px 14px;
-    border-radius:999px;
-    background: rgba(255,255,255,.16);
-    border:1px solid rgba(255,255,255,.22);
-    font-size:14px;
-    cursor:pointer;
-    user-select:none;
-    transition: transform .15s ease, background .15s ease;
-  }
-  .pill:hover{ transform: translateY(-2px); background: rgba(255,255,255,.22); }
-
-  /* Hidden note */
-  .note{
-    margin-top:18px;
-    padding:14px 16px;
-    border-radius:18px;
-    background: rgba(0,0,0,.20);
-    border:1px solid rgba(255,255,255,.18);
-    display:none;
-    font-size:16px;
-    line-height:1.7;
-  }
-
-  /* Small signature */
-  .sig{
-    margin-top:18px;
-    opacity:.75;
-    font-size:13px;
-  }
-
-  /* Little Dolhareubang icon (simple) */
-  .dol{
-    display:inline-block;
-    width:14px; height:14px;
-    border-radius:4px;
-    background: rgba(255,255,255,.35);
-    margin: 0 6px 0 0;
-    position:relative;
-    top:2px;
-  }
-  .dol:before,.dol:after{
-    content:"";
-    position:absolute;
-    background: rgba(255,255,255,.6);
-    border-radius:2px;
-  }
-  .dol:before{ width:8px; height:2px; left:3px; top:4px; }
-  .dol:after{ width:8px; height:2px; left:3px; top:8px; }
-
+.line.show {
+    opacity: 1;
+    transform: translateY(0);
+}
 </style>
 </head>
 
 <body>
-  <div class="sun"></div>
 
-  <div class="sea">
-    <div class="wave w1"></div>
-    <div class="wave w2"></div>
-    <div class="wave w3"></div>
-  </div>
+<div class="card">
+    <h1>정연수</h1>
 
-  <div class="wrap">
-    <div class="card">
-      <div class="sub"><span class="dol"></span>제주도의 노을처럼 따뜻한 마음</div>
-      <h1>정연수</h1>
-
-      <p class="msg">
-        연수는 제주도의 바다처럼 부드럽고,<br>
-        제주도의 하늘처럼 맑은 사람이에요.<br>
-        한라산처럼 단단한 마음을 가진 사람이기도 해요.<br><br>
-        네가 웃을 때마다, 내 하루도 조금 더 예뻐져.
-      </p>
-
-      <div class="pillRow">
-        <div class="pill" id="btn1">🍊 작은 메시지</div>
-        <div class="pill" id="btn2">🌊 오늘도 고마워</div>
-        <div class="pill" id="btn3">✨ 숨겨진 한마디</div>
-      </div>
-
-      <div class="note" id="note"></div>
-      <div class="sig">— from someone who sincerely wishes you a beautiful day</div>
-    </div>
-  </div>
+    <div class="line">연수는 제주도의 바다처럼 깊고 따뜻한 사람이에요.</div>
+    <div class="line">노을이 물든 해변처럼 조용히 빛나는 사람이에요.</div>
+    <div class="line">한라산처럼 단단한 마음을 가진 사람이에요.</div>
+    <div class="line">네가 웃을 때마다, 내 하루도 더 아름다워져.</div>
+</div>
 
 <script>
-  // Floating 귤
-  const count = 26;
-  for(let i=0;i<count;i++){
-    const g = document.createElement("div");
-    g.className = "gyul";
-    g.style.left = (Math.random()*100) + "vw";
-    g.style.top  = (-Math.random()*40) + "vh";
-    g.style.animationDuration = (7 + Math.random()*7) + "s";
-    g.style.opacity = (0.55 + Math.random()*0.35).toFixed(2);
-    g.style.transform = "translateY(0) rotate(" + (Math.random()*360) + "deg)";
-    document.body.appendChild(g);
-  }
+const lines = document.querySelectorAll(".line");
 
-  const note = document.getElementById("note");
-  const messages = {
-    btn1: "연수야, 너의 마음은 생각보다 더 많은 사람을 따뜻하게 해. 🍊",
-    btn2: "오늘도 네가 웃을 수 있길 바라. 그리고 그 이유가 내가 될 수 있으면 좋겠어. 🌊",
-    btn3: "오해가 생겨도, 나는 네 편이야. 언제나 진심으로. ✨"
-  };
-
-  function show(id){
-    note.style.display = "block";
-    note.textContent = messages[id];
-  }
-
-  document.getElementById("btn1").onclick = () => show("btn1");
-  document.getElementById("btn2").onclick = () => show("btn2");
-  document.getElementById("btn3").onclick = () => show("btn3");
+lines.forEach((line, index) => {
+    setTimeout(() => {
+        line.classList.add("show");
+    }, index * 2000);
+});
 </script>
+
 </body>
 </html>
