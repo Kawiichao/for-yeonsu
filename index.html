@@ -3,70 +3,55 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>정연수 · 제주도의 바다</title>
+<title>정연수 · 제주도의 노을</title>
 
 <style>
 * { box-sizing: border-box; }
 
 body {
     margin: 0;
-    height: 100vh;
-    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
     color: white;
-    background:
-        linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.6)),
-        url("https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=1950&q=80");
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
+    height: 100vh;
 }
 
-/* 轻微漂浮效果 */
-body::after {
-    content: "";
-    position: absolute;
-    width: 120%;
-    height: 120%;
-    background: inherit;
-    top: -10%;
-    left: -10%;
+/* 视频背景 */
+video {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+    object-fit: cover;
+    z-index: -2;
+}
+
+/* 暗色渐变 */
+.overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, rgba(0,0,0,0.75), rgba(0,0,0,0.2));
     z-index: -1;
-    animation: subtleMove 20s ease-in-out infinite alternate;
 }
 
-@keyframes subtleMove {
-    from { transform: scale(1) translateY(0px); }
-    to { transform: scale(1.05) translateY(-10px); }
-}
-
-/* 玻璃卡片 */
-.card {
-    width: min(650px, 90%);
-    padding: 60px 50px;
-    border-radius: 30px;
-    backdrop-filter: blur(20px);
-    background: rgba(255,255,255,0.15);
-    border: 1px solid rgba(255,255,255,0.3);
-    box-shadow: 0 40px 80px rgba(0,0,0,0.5);
+/* 字幕 */
+.text-container {
+    position: absolute;
+    bottom: 15%;
+    width: 100%;
     text-align: center;
-}
-
-h1 {
-    font-size: 48px;
-    margin-bottom: 30px;
-    letter-spacing: 2px;
 }
 
 .line {
     opacity: 0;
-    transform: translateY(15px);
-    transition: all 1s ease;
-    font-size: 20px;
-    line-height: 2;
+    transform: translateY(40px);
+    transition: all 2.5s ease;
+    font-size: 28px;
+    letter-spacing: 1.5px;
+    margin: 25px 0;
+    text-shadow: 0 0 15px rgba(255,255,255,0.6);
 }
 
 .line.show {
@@ -78,13 +63,24 @@ h1 {
 
 <body>
 
-<div class="card">
-    <h1>정연수</h1>
+<!-- 海边日落视频 -->
+<video autoplay muted loop>
+    <source src="https://cdn.coverr.co/videos/coverr-a-beautiful-sunset-over-the-ocean-1573/1080p.mp4" type="video/mp4">
+</video>
 
-    <div class="line">연수는 제주도의 바다처럼 깊고 따뜻한 사람이에요.</div>
-    <div class="line">노을이 물든 해변처럼 조용히 빛나는 사람이에요.</div>
-    <div class="line">한라산처럼 단단한 마음을 가진 사람이에요.</div>
-    <div class="line">네가 웃을 때마다, 내 하루도 더 아름다워져.</div>
+<!-- 海浪声音 -->
+<audio autoplay loop>
+    <source src="https://cdn.pixabay.com/download/audio/2021/09/28/audio_9e1b9e36c8.mp3?filename=ocean-waves-ambient-110624.mp3" type="audio/mpeg">
+</audio>
+
+<div class="overlay"></div>
+
+<div class="text-container">
+    <div class="line">정연수</div>
+    <div class="line">제주도의 노을처럼 조용히 빛나는 사람.</div>
+    <div class="line">바다처럼 깊고 따뜻한 마음을 가진 사람.</div>
+    <div class="line">네가 웃을 때, 세상은 더 아름다워져.</div>
+    <div class="line">그리고 나는, 언제나 네 편이야.</div>
 </div>
 
 <script>
@@ -93,7 +89,7 @@ const lines = document.querySelectorAll(".line");
 lines.forEach((line, index) => {
     setTimeout(() => {
         line.classList.add("show");
-    }, index * 2000);
+    }, index * 3500);
 });
 </script>
 
